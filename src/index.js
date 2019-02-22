@@ -7,12 +7,11 @@ import { mainTheme } from "./styles/themes/themes";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
-
 function Root() {
   return (
     <>
-      <MuiThemeProvider theme={ mainTheme }>
-        <CssBaseline/>
+      <MuiThemeProvider theme={mainTheme}>
+        <CssBaseline />
         <App />
       </MuiThemeProvider>
     </>

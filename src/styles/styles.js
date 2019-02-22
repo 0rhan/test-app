@@ -2,18 +2,17 @@ const controlsStyles = theme => ({
   FormControl: {
     margin: "10px",
     minWidth: "110px"
-  },
+  }
 });
 
 const contentStyles = theme => ({
   mainContainer: {
-    height: "auto",
-    backgroundColor: theme.palette.primary.light,
+    height: "auto"
   },
   itemListContainer: {
-    paddingTop: "64px",
+    paddingTop: "70px",
     paddingBottom: theme.mixins.toolbar.minHeight,
-    height: "100%",
+    height: "100%"
   }
 });
 
@@ -25,24 +24,32 @@ const itemStyles = theme => ({
 
   itemCardHeaderContainer: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row"
   },
 
   cardHeader: {
     flexDirection: "row",
-    flexGrow: "1",
+    flexGrow: "1"
   },
 
   cardFooter: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
 
   itemInfoDate: {
     paddingLeft: "12px",
-    flexBasis: "50%",
+    flexBasis: "50%"
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 0,
+    padding: "0px",
+    right: "5px",
+    color: "red",
+    backgroundColor: "white"
   }
 });
 
@@ -52,7 +59,7 @@ const bottomBarStyles = theme => ({
     bottom: 0,
     position: "fixed",
     width: "100%",
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   actionButton: {
     color: theme.palette.primary.dark
@@ -61,40 +68,58 @@ const bottomBarStyles = theme => ({
 
 const addingItemStyles = theme => ({
   Card: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   },
   Form: {
     width: "95%",
-    margin: "auto",
+    margin: "auto"
   }
-})
+});
+
+const actionButtons = theme => ({
+  container: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
+});
 
 const itemAddImageStyles = theme => ({
   imgLoadButton: {
     marginRight: "auto",
     marginLeft: "auto",
     width: "100%"
-  },
-})
+  }
+});
 
 const itemTextFieldsStyles = theme => ({
   priceImput: {
-    marginTop: "10px",
+    marginTop: "10px"
   },
 
   cssLabel: {
     "&$cssFocused": {
-      color: theme.palette.secondary.dark,
-    },
+      color: theme.palette.secondary.dark
+    }
   },
   cssOutlinedInput: {
     "&$cssFocused $notchedOutline": {
-      borderColor: theme.palette.secondary.main,
-    },
+      borderColor: theme.palette.secondary.main
+    }
   },
 
   cssFocused: {},
-  notchedOutline: {},
-})
+  notchedOutline: {}
+});
 
-export { controlsStyles, contentStyles, itemStyles, bottomBarStyles, addingItemStyles, itemAddImageStyles, itemTextFieldsStyles };
+export {
+  controlsStyles,
+  contentStyles,
+  itemStyles,
+  bottomBarStyles,
+  addingItemStyles,
+  itemAddImageStyles,
+  itemTextFieldsStyles,
+  actionButtons
+};

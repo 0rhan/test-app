@@ -5,34 +5,47 @@ import "moment/locale/ru";
 import MomentUtils from "@date-io/moment";
 import { MuiThemeProvider } from "@material-ui/core";
 import { calendarTheme } from "../../../../styles/themes/themes";
+import { ItemsContext } from "../../../../data/context";
 
-
-class SelecDate extends Component {
+class SelectDate extends Component {
   state = {
-    selectedDate: new Date(),
+    selectedDate: new Date()
   };
 
-  handleDateChange = date => {
-    this.setState( { selectedDate: date } );
+  handleDate = date => {
+    this.setState({
+      selectedDate: date
+    });
+    const context = this.context;
+    const { getItemDate } = context;
+    getItemDate(date);
   };
 
   render() {
-    const { selectedDate } = this.state;
     const locale = moment.locale("ru");
+    const { selectedDate } = this.state;
 
-    return(
-      <MuiThemeProvider theme = { calendarTheme }>
-        <MuiPickersUtilsProvider utils = { MomentUtils } locale = { locale } moment = { moment }>
-            <DatePicker
-              margin = "normal"
-              label = "Date picker"
-              value = { selectedDate }
-              onChange = { this.handleDateChange }
-            />
+    return (
+      <MuiThemeProvider theme={calendarTheme}>
+        <MuiPickersUtilsProvider
+          utils={MomentUtils}
+          locale={locale}
+          moment={moment}
+        >
+          <DatePicker
+            value={selectedDate}
+            disablePast
+            autoOk
+            margin="normal"
+            label="Выбрать дату"
+            onChange={this.handleDate}
+          />
         </MuiPickersUtilsProvider>
       </MuiThemeProvider>
-   );
+    );
   }
 }
 
-export default SelecDate;
+SelectDate.contextType = ItemsContext;
+
+export default SelectDate;
