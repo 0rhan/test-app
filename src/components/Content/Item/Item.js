@@ -18,7 +18,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Edit from "@material-ui/icons/Edit";
 import Cancel from "@material-ui/icons/Cancel";
 import { itemStyles } from "../../../styles/styles";
-import { ItemsContext } from "../../../data/context";
+import ItemsContext from "../../../data/context";
 
 class Item extends Component {
   state = {
@@ -46,11 +46,15 @@ class Item extends Component {
     const { classes, name, date, price, id } = this.props;
     const { anchorEl } = this.state;
     const context = this.context;
+    const { deleteItem } = context;
 
     return (
       <ListItem>
         <Card className={classes.itemCardContainer}>
-          <IconButton className={classes.deleteButton}>
+          <IconButton
+            className={classes.deleteButton}
+            onClick={() => deleteItem(id)}
+          >
             <Cancel />
           </IconButton>
           <div className={classes.itemCardHeaderContainer}>

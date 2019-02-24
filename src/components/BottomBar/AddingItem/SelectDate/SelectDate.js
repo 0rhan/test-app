@@ -5,7 +5,7 @@ import "moment/locale/ru";
 import MomentUtils from "@date-io/moment";
 import { MuiThemeProvider } from "@material-ui/core";
 import { calendarTheme } from "../../../../styles/themes/themes";
-import { ItemsContext } from "../../../../data/context";
+import ItemsContext from "../../../../data/context";
 
 class SelectDate extends Component {
   state = {

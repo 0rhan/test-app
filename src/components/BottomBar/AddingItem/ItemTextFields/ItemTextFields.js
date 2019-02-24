@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import { itemTextFieldsStyles } from "../../../../styles/styles";
-import { ItemsContext } from "../../../../data/context";
+import ItemsContext from "../../../../data/context";
 
 class ItemTextFields extends Component {
   state = {

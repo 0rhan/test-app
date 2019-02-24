@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { actionButtons } from "../../../../styles/styles";
-import { ItemsContext } from "../../../../data/context";
+import ItemsContext from "../../../../data/context";
 
 class ActionButtons extends Component {
   render() {
