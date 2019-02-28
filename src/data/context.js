@@ -2,4 +2,6 @@ import React from "react";
 
 const ItemsContext = React.createContext();
 
-export default ItemsContext;
+const DrawerContext = React.createContext();
+
+export { ItemsContext, DrawerContext };

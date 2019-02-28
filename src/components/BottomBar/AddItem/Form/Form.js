@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Card, CardHeader } from "@material-ui/core";
 import ItemTextFields from "./ItemTextFields/ItemTextFields";
-import ItemAddImage from "./ItemAddImage/ItemAddImage";
-import { addingItemStyles } from "../../../styles/styles";
+import { addingItemStyles } from "../../../../styles/styles";
 import SelectDate from "./SelectDate/SelectDate";
 import ActionButtons from "./ActionButtons/ActionButtons";
 
-function AddingItem(props) {
+function Form(props) {
   const { classes } = props;
   return (
     <Card className={classes.Card}>
@@ -16,15 +15,14 @@ function AddingItem(props) {
       <form className={classes.Form}>
         <ItemTextFields />
         <SelectDate />
-        <ItemAddImage />
-        <ActionButtons toggleDrawer={props.toggleDrawer} />
+        <ActionButtons toggleAddDrawer={props.toggleAddDrawer} />
       </form>
     </Card>
   );
 }
 
-AddingItem.propTypes = {
+Form.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(addingItemStyles)(AddingItem);
+export default withStyles(addingItemStyles)(Form);

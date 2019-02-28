@@ -2,60 +2,106 @@ import React, { Component } from "react";
 import TopBar from "./TopBar/TopBar";
 import BottomBar from "./BottomBar/BottomBar";
 import Content from "./Content/Content";
-import ItemsContext from "../data/context";
+import { ItemsContext, DrawerContext } from "../data/context";
 import uuid from "uuid/v4";
+import isNameEmpty from "../utils/functions/isNameEmpty";
+import isNotNumber from "../utils/functions/isNotNumber";
+import getDateString from "../utils/functions/getDateString";
 
 class App extends Component {
   state = {
+    // Данные о покупке
     item: {
       name: "",
-      price: 1,
+      price: "",
       date: "",
       id: ""
     },
-    itemsCollection: []
-  };
 
-  getItemName = (event, showNameError) => {
-    const value = event.target.value;
-    if (value === "") {
-      showNameError(true);
-    } else {
-      showNameError(false);
-      this.setState(prevState => ({
-        item: {
-          ...prevState.item,
-          name: value
-        }
-      }));
+    //Коллекция покупок
+    itemsCollection: [],
+
+    //Индекс товара в массиве (для редактирования информации о покупке)
+    elementIndex: {
+      index: ""
+    },
+
+    drawers: {
+      addDrawer: {
+        bottom: false
+      },
+      editDrawer: {
+        bottom: false
+      }
     }
   };
 
-  getItemPrice = (event, showPriceError) => {
+  // Показать форму для добавления покупки
+  toggleAddDrawer = (side, open) => {
+    this.setState(prevState => ({
+      drawers: {
+        ...prevState.drawers,
+        addDrawer: {
+          [side]: open
+        }
+      }
+    }));
+  };
+
+  //Передача информации о покупке, валидация
+  writeItemInfo = (event, showError) => {
     const value = event.target.value;
-    if (isNaN(value) || +value === 0) {
-      showPriceError(true);
-    } else {
-      showPriceError(false);
+    const type = event.target.type;
+    const { date } = this.state.item;
+
+    // Установка даты по умолчанию
+    if (date === "") {
+      const currentDate = new Date();
+      const formattedDate = getDateString(currentDate);
       this.setState(prevState => ({
         item: {
           ...prevState.item,
-          price: value
+          date: formattedDate
         }
       }));
+    }
+
+    //"Валидация" данных при добавлении
+    switch (type) {
+      case "text":
+        if (isNameEmpty(value)) {
+          showError(true);
+        } else {
+          showError(false);
+        }
+        this.setState(prevState => ({
+          item: {
+            ...prevState.item,
+            name: value
+          }
+        }));
+        break;
+      case "number":
+        if (isNotNumber(value)) {
+          showError(true);
+        } else {
+          showError(false);
+        }
+        this.setState(prevState => ({
+          item: {
+            ...prevState.item,
+            price: value
+          }
+        }));
+        break;
+      default:
     }
   };
 
   getItemDate = dateObj => {
     const { _d: date } = dateObj;
 
-    const options = {
-      day: "2-digit",
-      month: "2-digit",
-      year: "2-digit"
-    };
-
-    const formattedDate = date.toLocaleString("ru", options);
+    const formattedDate = getDateString(date);
 
     this.setState(prevState => ({
       item: {
@@ -66,30 +112,85 @@ class App extends Component {
   };
 
   saveItem = () => {
-    const { itemsCollection } = this.state;
+    const {
+      itemsCollection,
+      item: { name, price }
+    } = this.state;
     const id = uuid();
 
+    if (name && price) {
+      this.setState(
+        prevState => ({
+          item: {
+            ...prevState.item,
+            id: id
+          }
+        }),
+        () => {
+          this.setState(
+            prevState => ({
+              itemsCollection: [...itemsCollection, prevState.item]
+            }),
+            () =>
+              this.setState(prevState => ({
+                item: {
+                  name: "",
+                  price: "",
+                  date: "",
+                  id: ""
+                }
+              }))
+          );
+        }
+      );
+    }
+  };
+
+  toggleEditDrawer = (side, open) => {
+    this.setState(prevState => ({
+      drawers: {
+        ...prevState.drawers,
+        editDrawer: {
+          [side]: open
+        }
+      }
+    }));
+  };
+
+  getElementIndex = index => {
+    this.setState(prevState => ({
+      elementIndex: {
+        index: index
+      }
+    }));
+  };
+
+  editItem = (index, id) => {
+    const { itemsCollection, item } = this.state;
+    this.setState(prevState => ({
+      item: {
+        ...prevState.item,
+        id: id
+      }
+    }));
+    const updatedItemsCollection = [...itemsCollection];
+    updatedItemsCollection[index] = item;
     this.setState(
       prevState => ({
-        item: {
-          ...prevState.item,
-          id: id
-        }
-      }),
-      () => {
-        this.setState(prevState => ({
-          itemsCollection: [...itemsCollection, prevState.item]
-        }));
-      }
+        itemsCollection: updatedItemsCollection
+      })
+      //() => console.log(this.state.itemsCollection)
     );
   };
 
-  deleteItem = elemId => {
+  deleteItem = id => {
     const { itemsCollection } = this.state;
-    const newCollection = itemsCollection.filter(item => {
-      const { id } = item;
+
+    const newCollection = itemsCollection.filter(elem => {
+      const { id: elemId } = elem;
       return id !== elemId;
     });
+
     this.setState({
       itemsCollection: newCollection
     });
@@ -100,16 +201,25 @@ class App extends Component {
       <ItemsContext.Provider
         value={{
           state: this.state,
-          getItemName: this.getItemName,
-          getItemPrice: this.getItemPrice,
+          writeItemInfo: this.writeItemInfo,
           getItemDate: this.getItemDate,
           saveItem: this.saveItem,
-          deleteItem: this.deleteItem
+          deleteItem: this.deleteItem,
+          editItem: this.editItem
         }}
       >
-        <TopBar />
-        <Content />
-        <BottomBar />
+        <DrawerContext.Provider
+          value={{
+            state: this.state,
+            toggleAddDrawer: this.toggleAddDrawer,
+            toggleEditDrawer: this.toggleEditDrawer,
+            getElementIndex: this.getElementIndex
+          }}
+        >
+          <TopBar />
+          <Content />
+          <BottomBar />
+        </DrawerContext.Provider>
       </ItemsContext.Provider>
     );
   }

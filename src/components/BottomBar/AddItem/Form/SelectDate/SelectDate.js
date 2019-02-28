@@ -4,8 +4,8 @@ import moment from "moment";
 import "moment/locale/ru";
 import MomentUtils from "@date-io/moment";
 import { MuiThemeProvider } from "@material-ui/core";
-import { calendarTheme } from "../../../../styles/themes/themes";
-import ItemsContext from "../../../../data/context";
+import { calendarTheme } from "../../../../../styles/themes/themes";
+import { ItemsContext } from "../../../../../data/context";
 
 class SelectDate extends Component {
   state = {
@@ -27,20 +27,22 @@ class SelectDate extends Component {
 
     return (
       <MuiThemeProvider theme={calendarTheme}>
-        <MuiPickersUtilsProvider
-          utils={MomentUtils}
-          locale={locale}
-          moment={moment}
-        >
-          <DatePicker
-            value={selectedDate}
-            disablePast
-            autoOk
-            margin="normal"
-            label="Выбрать дату"
-            onChange={this.handleDate}
-          />
-        </MuiPickersUtilsProvider>
+        <div>
+          <p>Выберите дату:</p>
+          <MuiPickersUtilsProvider
+            utils={MomentUtils}
+            locale={locale}
+            moment={moment}
+          >
+            <DatePicker
+              value={selectedDate}
+              disablePast
+              autoOk
+              margin="normal"
+              onChange={this.handleDate}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
       </MuiThemeProvider>
     );
   }

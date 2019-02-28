@@ -1,14 +1,4 @@
-const controlsStyles = theme => ({
-  FormControl: {
-    margin: "10px",
-    minWidth: "110px"
-  }
-});
-
 const contentStyles = theme => ({
-  mainContainer: {
-    height: "auto"
-  },
   itemListContainer: {
     paddingTop: "70px",
     paddingBottom: theme.mixins.toolbar.minHeight,
@@ -114,7 +104,6 @@ const itemTextFieldsStyles = theme => ({
 });
 
 export {
-  controlsStyles,
   contentStyles,
   itemStyles,
   bottomBarStyles,

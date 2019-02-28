@@ -1,34 +1,58 @@
 import React, { Component } from "react";
-import { List } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import { contentStyles } from "../../styles/styles";
+import { List, Typography } from "@material-ui/core";
 import Item from "../../components/Content/Item/Item";
-import ItemsContext from "../../data/context";
+import { ItemsContext } from "../../data/context";
+import styled from "styled-components";
+
+const Main = styled.main`
+  && {
+    height: auto;
+  }
+`;
+
+const ListContainer = styled(List)`
+  && {
+    padding-top: 70px;
+    padding-bottom: 56px;
+    height: 100%;
+  }
+`;
 
 class Content extends Component {
   render() {
-    const { classes } = this.props;
+    //console.log(this.props);
     const context = this.context;
+
     const {
       state: { itemsCollection }
     } = context;
-    const items = itemsCollection.map(item => {
+
+    const items = itemsCollection.map((item, index) => {
       const { name, price, date, id } = item;
-      return <Item name={name} price={price} date={date} key={id} id={id} />;
+      return (
+        <Item
+          name={name}
+          price={price}
+          date={date}
+          key={id}
+          id={id}
+          index={index}
+        />
+      );
     });
+
+    //console.log(items.length);
+
     return (
-      <main className={classes.mainContainer}>
-        <List className={classes.itemListContainer}> {items} </List>
-      </main>
+      <Main>
+        <ListContainer>
+          {items.length === 0 ? <Typography>Пусто</Typography> : items}
+        </ListContainer>
+      </Main>
     );
   }
 }
 
 Content.contextType = ItemsContext;
 
-Content.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(contentStyles)(Content);
+export default Content;

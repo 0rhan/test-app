@@ -2,45 +2,54 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
-import { itemTextFieldsStyles } from "../../../../styles/styles";
-import ItemsContext from "../../../../data/context";
+import { itemTextFieldsStyles } from "../../../../../styles/styles";
+import { ItemsContext } from "../../../../../data/context";
 
 class ItemTextFields extends Component {
   state = {
-    priceError: false,
-    nameError: false
+    wrongName: false,
+    wrongPrice: false
   };
 
   showNameError = bool => {
     this.setState({
       ...this.state,
-      nameError: bool
+      wrongName: bool
     });
   };
   showPriceError = bool => {
     this.setState({
       ...this.state,
-      priceError: bool
+      wrongPrice: bool
     });
   };
 
   render() {
-    let { priceError, nameError } = this.state;
+    let { wrongName, wrongPrice } = this.state;
     const { classes } = this.props;
     const context = this.context;
-    const { getItemName, getItemPrice } = context;
+    const {
+      writeItemInfo,
+      state: {
+        elementIndex: { index },
+        itemsCollection
+      }
+    } = context;
+    const item = itemsCollection[index];
+    const { name, price } = item;
 
     return (
       <>
         <TextField
-          error={nameError}
-          onBlur={event => getItemName(event, this.showNameError)}
-          onChange={event => getItemName(event, this.showNameError)}
-          helperText={nameError ? "Название не должно быть пустым" : ""}
-          id="outlined-name"
+          defaultValue={name}
+          error={wrongName}
+          onBlur={event => writeItemInfo(event, this.showNameError)}
+          onChange={event => writeItemInfo(event, this.showNameError)}
+          helperText={wrongName ? "Введите название" : ""}
           label="Название"
           variant="outlined"
           required
+          type="text"
           fullWidth
           InputLabelProps={{
             classes: {
@@ -57,15 +66,15 @@ class ItemTextFields extends Component {
           }}
         />
         <TextField
-          error={priceError}
-          onChange={event => getItemPrice(event, this.showPriceError)}
+          defaultValue={price}
+          error={wrongPrice}
+          onChange={event => writeItemInfo(event, this.showPriceError)}
           label="Цена"
           variant="outlined"
           required
           type="number"
-          defaultValue={1}
           className={classes.priceImput}
-          helperText={priceError ? "Неверное значение" : ""}
+          helperText={wrongPrice ? "Неверное значение" : ""}
           InputLabelProps={{
             classes: {
               root: classes.cssLabel,

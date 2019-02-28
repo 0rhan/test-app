@@ -1,32 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  SwipeableDrawer
-} from "@material-ui/core";
+import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 import RemoveShoppingCart from "@material-ui/icons/RemoveShoppingCart";
 import ShowChart from "@material-ui/icons/ShowChart";
-import AddingItem from "./AddingItem/AddingItem";
+import AddItem from "./AddItem/AddItem";
+import EditItem from "./EditItem/EditItem";
 import { bottomBarStyles } from "../../styles/styles";
+import { DrawerContext } from "../../data/context";
 
-class BottomAppBar extends Component {
+class BottomBar extends Component {
   state = {
     //ActionSelect state
-    value: "",
-    //Drawer state
-    bottom: false
+    value: ""
   };
 
-  handleActionSelect = (event, value) => {
+  handleActionSelect = value => {
     this.setState({ value });
-  };
-
-  toggleDrawer = (side, open) => () => {
-    console.log("triggered");
-    this.setState({ [side]: open });
   };
 
   render() {
@@ -35,49 +26,42 @@ class BottomAppBar extends Component {
 
     return (
       <>
-        <SwipeableDrawer
-          anchor="bottom"
-          open={this.state.bottom}
-          disableSwipeToOpen
-          disableBackdropTransition
-          onClose={this.toggleDrawer("bottom", false)}
-          onOpen={this.toggleDrawer("bottom", true)}
-          SlideProps={{
-            unmountOnExit: true
-          }}
-        >
-          <AddingItem toggleDrawer={this.toggleDrawer} />
-        </SwipeableDrawer>
-        <BottomNavigation
-          value={value}
-          className={classes.root}
-          onChange={this.handleActionSelect}
-          showLabels
-        >
-          <BottomNavigationAction
-            label="Статистика"
-            icon={<ShowChart />}
-            className={classes.actionButton}
-          />
-          <BottomNavigationAction
-            label="Добавить"
-            icon={<AddShoppingCart />}
-            onClick={this.toggleDrawer("bottom", true)}
-            className={classes.actionButton}
-          />
-          <BottomNavigationAction
-            label="Удалить"
-            icon={<RemoveShoppingCart />}
-            className={classes.actionButton}
-          />
-        </BottomNavigation>
+        <AddItem />
+        <EditItem />
+        <DrawerContext.Consumer>
+          {({ toggleAddDrawer }) => (
+            <BottomNavigation
+              value={value}
+              className={classes.root}
+              onChange={this.handleActionSelect}
+              showLabels
+            >
+              <BottomNavigationAction
+                label="Статистика"
+                icon={<ShowChart />}
+                className={classes.actionButton}
+              />
+              <BottomNavigationAction
+                label="Добавить"
+                icon={<AddShoppingCart />}
+                onClick={() => toggleAddDrawer("bottom", true)}
+                className={classes.actionButton}
+              />
+              <BottomNavigationAction
+                label="Удалить"
+                icon={<RemoveShoppingCart />}
+                className={classes.actionButton}
+              />
+            </BottomNavigation>
+          )}
+        </DrawerContext.Consumer>
       </>
     );
   }
 }
 
-BottomAppBar.propTypes = {
+BottomBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(bottomBarStyles)(BottomAppBar);
+export default withStyles(bottomBarStyles)(BottomBar);
