@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { List, Typography } from "@material-ui/core";
 import Item from "../../components/Content/Item/Item";
 import { ItemsContext } from "../../data/context";
+import uuid from "uuid/v4";
 import styled from "styled-components";
 
 const Main = styled.main`
@@ -20,7 +21,6 @@ const ListContainer = styled(List)`
 
 class Content extends Component {
   render() {
-    //console.log(this.props);
     const context = this.context;
 
     const {
@@ -28,20 +28,21 @@ class Content extends Component {
     } = context;
 
     const items = itemsCollection.map((item, index) => {
-      const { name, price, date, id } = item;
+      const key = uuid();
+      const { name, price, date } = item;
+      console.log("content:", item);
+      console.log("content:", key);
       return (
         <Item
           name={name}
           price={price}
           date={date}
-          key={id}
-          id={id}
+          key={key}
+          id={key}
           index={index}
         />
       );
     });
-
-    //console.log(items.length);
 
     return (
       <Main>

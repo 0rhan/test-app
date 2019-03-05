@@ -29,7 +29,6 @@ class ItemTextFields extends Component {
     const { classes } = this.props;
     const context = this.context;
     const { writeItemInfo } = context;
-    //console.log(this.state);
 
     return (
       <>
@@ -64,7 +63,6 @@ class ItemTextFields extends Component {
           variant="outlined"
           required
           type="number"
-          defaultValue={1}
           className={classes.priceImput}
           helperText={wrongPrice ? "Неверное значение" : ""}
           InputLabelProps={{
