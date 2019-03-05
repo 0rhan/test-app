@@ -3,10 +3,17 @@ import TopBar from "./TopBar/TopBar";
 import BottomBar from "./BottomBar/BottomBar";
 import Content from "./Content/Content";
 import { ItemsContext, DrawerContext } from "../data/context";
-import uuid from "uuid/v4";
 import isNameEmpty from "../utils/functions/isNameEmpty";
 import isNotNumber from "../utils/functions/isNotNumber";
 import getDateString from "../utils/functions/getDateString";
+import {
+  ascendingPrice,
+  descendingPrice
+} from "../utils/functions/sortItemsByPrice";
+import {
+  descendingDate,
+  ascendingDate
+} from "../utils/functions/sortItemsByDate";
 
 class App extends Component {
   state = {
@@ -14,8 +21,7 @@ class App extends Component {
     item: {
       name: "",
       price: "",
-      date: "",
-      id: ""
+      date: ""
     },
 
     //Коллекция покупок
@@ -26,6 +32,7 @@ class App extends Component {
       index: ""
     },
 
+    // Состояние контейнеров с формами для добавления и редактирования
     drawers: {
       addDrawer: {
         bottom: false
@@ -98,6 +105,7 @@ class App extends Component {
     }
   };
 
+  // Получение даты покупки
   getItemDate = dateObj => {
     const { _d: date } = dateObj;
 
@@ -111,19 +119,18 @@ class App extends Component {
     }));
   };
 
+  // Запись данных о покупке в коллекцию.
   saveItem = () => {
     const {
       itemsCollection,
       item: { name, price }
     } = this.state;
-    const id = uuid();
 
     if (name && price) {
       this.setState(
         prevState => ({
           item: {
-            ...prevState.item,
-            id: id
+            ...prevState.item
           }
         }),
         () => {
@@ -136,8 +143,7 @@ class App extends Component {
                 item: {
                   name: "",
                   price: "",
-                  date: "",
-                  id: ""
+                  date: ""
                 }
               }))
           );
@@ -146,17 +152,35 @@ class App extends Component {
     }
   };
 
-  toggleEditDrawer = (side, open) => {
-    this.setState(prevState => ({
-      drawers: {
-        ...prevState.drawers,
-        editDrawer: {
-          [side]: open
+  // Вывод формы для редактрования покупки
+  toggleEditDrawer = (side, open, index) => {
+    this.setState(
+      prevState => ({
+        drawers: {
+          ...prevState.drawers,
+          editDrawer: {
+            [side]: open
+          }
+        }
+      }),
+      () => {
+        if (index !== undefined) {
+          const { itemsCollection } = this.state;
+          const itemForEdit = itemsCollection[index];
+          const { name, price } = itemForEdit;
+          this.setState(prevState => ({
+            item: {
+              ...prevState.item,
+              name: name,
+              price: price
+            }
+          }));
         }
       }
-    }));
+    );
   };
 
+  // Получение индекса элемента в коллекции
   getElementIndex = index => {
     this.setState(prevState => ({
       elementIndex: {
@@ -165,12 +189,12 @@ class App extends Component {
     }));
   };
 
-  editItem = (index, id) => {
+  // Редактирование покупки и запись в коллекцию
+  editItem = index => {
     const { itemsCollection, item } = this.state;
     this.setState(prevState => ({
       item: {
-        ...prevState.item,
-        id: id
+        ...prevState.item
       }
     }));
     const updatedItemsCollection = [...itemsCollection];
@@ -178,11 +202,53 @@ class App extends Component {
     this.setState(
       prevState => ({
         itemsCollection: updatedItemsCollection
-      })
-      //() => console.log(this.state.itemsCollection)
+      }),
+      () => {
+        this.setState({
+          item: {
+            name: "",
+            price: "",
+            date: ""
+          }
+        });
+      }
     );
   };
 
+  // Сортировка списка
+  getSortedItems = sortBy => {
+    const { itemsCollection } = this.state;
+    const newItemsCollection = [...itemsCollection];
+    switch (sortBy) {
+      case "ascending price":
+        newItemsCollection.sort(ascendingPrice);
+        this.setState(prevState => ({
+          itemsCollection: newItemsCollection
+        }));
+        break;
+      case "descending price":
+        newItemsCollection.sort(descendingPrice);
+        this.setState(prevState => ({
+          itemsCollection: newItemsCollection
+        }));
+        break;
+      case "ascending date":
+        newItemsCollection.sort(ascendingDate);
+        this.setState(prevState => ({
+          itemsCollection: newItemsCollection
+        }));
+        break;
+      case "descending date":
+        newItemsCollection.sort(descendingDate);
+        this.setState(prevState => ({
+          itemsCollection: newItemsCollection
+        }));
+        break;
+      default:
+    }
+  };
+
+  // Удаление покупки из списка
   deleteItem = id => {
     const { itemsCollection } = this.state;
 
@@ -205,7 +271,8 @@ class App extends Component {
           getItemDate: this.getItemDate,
           saveItem: this.saveItem,
           deleteItem: this.deleteItem,
-          editItem: this.editItem
+          editItem: this.editItem,
+          getSortedItems: this.getSortedItems
         }}
       >
         <DrawerContext.Provider

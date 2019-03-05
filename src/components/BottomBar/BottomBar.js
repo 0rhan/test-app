@@ -12,7 +12,6 @@ import { DrawerContext } from "../../data/context";
 
 class BottomBar extends Component {
   state = {
-    //ActionSelect state
     value: ""
   };
 

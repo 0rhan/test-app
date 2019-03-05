@@ -29,7 +29,6 @@ class ItemTextFields extends Component {
     const { classes } = this.props;
     const context = this.context;
     const { writeItemInfo } = context;
-    //console.log(this.state);
 
     return (
       <>

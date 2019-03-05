@@ -26,7 +26,7 @@ class ActionButtons extends Component {
           Отмена
         </Button>
         <Button
-          disabled={name && price ? false : true}
+          disabled={name && price > 0 ? false : true}
           color="secondary"
           variant="outlined"
           onClick={() => {

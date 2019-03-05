@@ -79,7 +79,7 @@ class Item extends Component {
                 >
                   <MenuItem
                     onClick={() => {
-                      toggleEditDrawer("bottom", true);
+                      toggleEditDrawer("bottom", true, index);
                       getElementIndex(index);
                     }}
                   >

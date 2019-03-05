@@ -17,6 +17,7 @@ class ActionButtons extends Component {
         elementIndex: { index }
       }
     } = context;
+    console.log(name, price)
     const itemForEdit = itemsCollection[index];
     const { id } = itemForEdit;
     return (
@@ -29,7 +30,7 @@ class ActionButtons extends Component {
           Отмена
         </Button>
         <Button
-          disabled={name && price ? false : true}
+          disabled={name && (price>0) ? false : true}
           color="secondary"
           variant="outlined"
           onClick={() => {
