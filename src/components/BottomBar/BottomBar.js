@@ -5,34 +5,41 @@ import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 import RemoveShoppingCart from "@material-ui/icons/RemoveShoppingCart";
 import ShowChart from "@material-ui/icons/ShowChart";
-import AddItem from "./AddItem/AddItem";
-import EditItem from "./EditItem/EditItem";
+import Drawer from "./Drawer/Drawer";
 import { bottomBarStyles } from "../../styles/styles";
-import { DrawerContext } from "../../data/context";
+import { ItemsConsumer } from "../../data/context";
 
 class BottomBar extends Component {
   state = {
-    value: ""
+    //номер элемента
+    value: 0
   };
 
-  handleActionSelect = value => {
-    this.setState({ value });
+  //Выделение активного элемента
+  handleChange = (event, value) => {
+    this.setState({
+      value
+    });
   };
 
   render() {
     const { classes } = this.props;
     const { value } = this.state;
-
     return (
-      <>
-        <AddItem />
-        <EditItem />
-        <DrawerContext.Consumer>
-          {({ toggleAddDrawer }) => (
+      <ItemsConsumer>
+        {({ toggleDrawer, itemsCollection, open, mode, elemKey }) => (
+          <>
+            <Drawer
+              toggleDrawer={toggleDrawer}
+              itemsCollection={itemsCollection}
+              open={open}
+              mode={mode}
+              elemKey={elemKey}
+            />
             <BottomNavigation
               value={value}
               className={classes.root}
-              onChange={this.handleActionSelect}
+              onChange={this.handleChange}
               showLabels
             >
               <BottomNavigationAction
@@ -42,8 +49,8 @@ class BottomBar extends Component {
               />
               <BottomNavigationAction
                 label="Добавить"
+                onClick={toggleDrawer(true, "adding")}
                 icon={<AddShoppingCart />}
-                onClick={() => toggleAddDrawer("bottom", true)}
                 className={classes.actionButton}
               />
               <BottomNavigationAction
@@ -52,9 +59,9 @@ class BottomBar extends Component {
                 className={classes.actionButton}
               />
             </BottomNavigation>
-          )}
-        </DrawerContext.Consumer>
-      </>
+          </>
+        )}
+      </ItemsConsumer>
     );
   }
 }

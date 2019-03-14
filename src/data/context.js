@@ -2,6 +2,7 @@ import React from "react";
 
 const ItemsContext = React.createContext();
 
-const DrawerContext = React.createContext();
+const ItemsProvider = ItemsContext.Provider;
+const ItemsConsumer = ItemsContext.Consumer;
 
-export { ItemsContext, DrawerContext };
+export { ItemsProvider, ItemsConsumer };

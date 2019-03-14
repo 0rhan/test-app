@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 import { FormControl, Select, MenuItem } from "@material-ui/core";
-import { ItemsContext } from "../../../data/context";
+import styled from "styled-components";
+import { ItemsConsumer } from "../../../data/context";
 
 const StyledFormControl = styled(FormControl)`
   && {
@@ -12,47 +12,87 @@ const StyledFormControl = styled(FormControl)`
 
 class Controls extends Component {
   state = {
-    sort: ""
+    select: "",
+    sort: {
+      price: "price",
+      date: "date"
+    },
+    direction: ""
   };
 
-  handleSort = event => {
-    const context = this.context;
-    const { getSortedItems } = context;
+  handleClick = (direction, name) => {
+    console.log("triggurs");
+    const { sortItem } = this.props;
+    console.log(sortItem);
     this.setState(
-      prevState => ({
-        ...prevState,
-        sort: event.target.value
-      }),
+      {
+        direction: direction
+      },
       () => {
-        getSortedItems(this.state.sort);
+        sortItem(name, direction);
       }
     );
   };
 
+  changeSelect = event => {
+    this.setState({
+      select: event.target.value
+    });
+  };
+
   render() {
+    const {
+      sort: { price, date }
+    } = this.state;
     return (
       <form>
         <StyledFormControl>
           <Select
-            value={this.state.sort}
-            onChange={event => this.handleSort(event)}
+            value={this.state.select}
+            onChange={event => this.changeSelect(event)}
             name="sortitems"
             displayEmpty
           >
             <MenuItem value="" disabled>
               Сортировка
             </MenuItem>
-            <MenuItem value="descending price">По убыванию цены</MenuItem>
-            <MenuItem value="ascending price">По возрастанию цены</MenuItem>
-            <MenuItem value="ascending date">По дате, позже</MenuItem>
-            <MenuItem value="descending date">По дате, раньше</MenuItem>
+            <MenuItem
+              value="descending price"
+              onClick={() => {
+                this.handleClick(false, price);
+              }}
+            >
+              По убыванию цены
+            </MenuItem>
+            <MenuItem
+              value="ascending price"
+              onClick={() => {
+                this.handleClick(true, price);
+              }}
+            >
+              По возрастанию цены
+            </MenuItem>
+            <MenuItem
+              value="ascending date"
+              onClick={() => {
+                this.handleClick(false, date);
+              }}
+            >
+              По дате, позже
+            </MenuItem>
+            <MenuItem
+              value="descending date"
+              onClick={() => {
+                this.handleClick(true, date);
+              }}
+            >
+              По дате, раньше
+            </MenuItem>
           </Select>
         </StyledFormControl>
       </form>
     );
   }
 }
-
-Controls.contextType = ItemsContext;
 
 export default Controls;

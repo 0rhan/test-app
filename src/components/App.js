@@ -2,292 +2,128 @@ import React, { Component } from "react";
 import TopBar from "./TopBar/TopBar";
 import BottomBar from "./BottomBar/BottomBar";
 import Content from "./Content/Content";
-import { ItemsContext, DrawerContext } from "../data/context";
-import isNameEmpty from "../utils/functions/isNameEmpty";
-import isNotNumber from "../utils/functions/isNotNumber";
-import getDateString from "../utils/functions/getDateString";
-import {
-  ascendingPrice,
-  descendingPrice
-} from "../utils/functions/sortItemsByPrice";
-import {
-  descendingDate,
-  ascendingDate
-} from "../utils/functions/sortItemsByDate";
+import { ItemsProvider } from "../data/context";
+import uuidV4 from "uuid/v4";
+import { getItemIndex } from "../utils/utils";
+
+/* TODO:
+ * - 2. Сортировка
+ * - 3. Валидация
+ */
 
 class App extends Component {
   state = {
-    // Данные о покупке
-    item: {
-      name: "",
-      price: "",
-      date: ""
-    },
-
-    //Коллекция покупок
     itemsCollection: [],
-
-    //Индекс товара в массиве (для редактирования информации о покупке)
-    elementIndex: {
-      index: ""
-    },
-
-    // Состояние контейнеров с формами для добавления и редактирования
-    drawers: {
-      addDrawer: {
-        bottom: false
-      },
-      editDrawer: {
-        bottom: false
-      }
+    drawer: {
+      open: false,
+      mode: "adding",
+      elemKey: ""
     }
   };
 
-  // Показать форму для добавления покупки
-  toggleAddDrawer = (side, open) => {
-    this.setState(prevState => ({
-      drawers: {
-        ...prevState.drawers,
-        addDrawer: {
-          [side]: open
-        }
+  toggleDrawer = (open, mode, elemKey) => () => {
+    this.setState({
+      drawer: {
+        open: open,
+        mode: mode,
+        elemKey: elemKey
       }
-    }));
+    });
   };
 
-  //Передача информации о покупке, валидация
-  writeItemInfo = (event, showError) => {
-    const value = event.target.value;
-    const type = event.target.type;
-    const { date } = this.state.item;
-
-    // Установка даты по умолчанию
-    if (date === "") {
-      const currentDate = new Date();
-      const formattedDate = getDateString(currentDate);
-      this.setState(prevState => ({
-        item: {
-          ...prevState.item,
-          date: formattedDate
-        }
-      }));
-    }
-
-    //"Валидация" данных при добавлении
-    switch (type) {
-      case "text":
-        if (isNameEmpty(value)) {
-          showError(true);
-        } else {
-          showError(false);
-        }
-        this.setState(prevState => ({
-          item: {
-            ...prevState.item,
-            name: value
-          }
-        }));
-        break;
-      case "number":
-        if (isNotNumber(value)) {
-          showError(true);
-        } else {
-          showError(false);
-        }
-        this.setState(prevState => ({
-          item: {
-            ...prevState.item,
-            price: value
-          }
-        }));
-        break;
-      default:
-    }
-  };
-
-  // Получение даты покупки
-  getItemDate = dateObj => {
-    const { _d: date } = dateObj;
-
-    const formattedDate = getDateString(date);
-
-    this.setState(prevState => ({
-      item: {
-        ...prevState.item,
-        date: formattedDate
-      }
-    }));
-  };
-
-  // Запись данных о покупке в коллекцию.
-  saveItem = () => {
+  writeItem = (name, price, date, elemKey) => () => {
     const {
-      itemsCollection,
-      item: { name, price }
+      drawer: { mode }
     } = this.state;
 
-    if (name && price) {
+    if (mode === "adding") {
+      const key = uuidV4();
+      const item = {
+        name: name,
+        price: price,
+        date: date,
+        key: key
+      };
+
       this.setState(
         prevState => ({
-          item: {
-            ...prevState.item
-          }
+          itemsCollection: [...prevState.itemsCollection, item]
         }),
         () => {
-          this.setState(
-            prevState => ({
-              itemsCollection: [...itemsCollection, prevState.item]
-            }),
-            () =>
-              this.setState(prevState => ({
-                item: {
-                  name: "",
-                  price: "",
-                  date: ""
-                }
-              }))
-          );
+          console.log(this.state);
         }
       );
     }
-  };
 
-  // Вывод формы для редактрования покупки
-  toggleEditDrawer = (side, open, index) => {
-    this.setState(
-      prevState => ({
-        drawers: {
-          ...prevState.drawers,
-          editDrawer: {
-            [side]: open
-          }
-        }
-      }),
-      () => {
-        if (index !== undefined) {
-          const { itemsCollection } = this.state;
-          const itemForEdit = itemsCollection[index];
-          const { name, price } = itemForEdit;
-          this.setState(prevState => ({
-            item: {
-              ...prevState.item,
-              name: name,
-              price: price
-            }
-          }));
-        }
-      }
-    );
-  };
+    if (mode === "editing") {
+      const { itemsCollection } = this.state;
+      let collectionForEdit = [...itemsCollection];
+      const newItem = {
+        name: name,
+        price: price,
+        date: date,
+        key: elemKey
+      };
 
-  // Получение индекса элемента в коллекции
-  getElementIndex = index => {
-    this.setState(prevState => ({
-      elementIndex: {
-        index: index
-      }
-    }));
-  };
+      const itemIndex = getItemIndex(collectionForEdit, elemKey);
+      collectionForEdit[itemIndex] = newItem;
 
-  // Редактирование покупки и запись в коллекцию
-  editItem = index => {
-    const { itemsCollection, item } = this.state;
-    this.setState(prevState => ({
-      item: {
-        ...prevState.item
-      }
-    }));
-    const updatedItemsCollection = [...itemsCollection];
-    updatedItemsCollection[index] = item;
-    this.setState(
-      prevState => ({
-        itemsCollection: updatedItemsCollection
-      }),
-      () => {
-        this.setState({
-          item: {
-            name: "",
-            price: "",
-            date: ""
-          }
-        });
-      }
-    );
-  };
-
-  // Сортировка списка
-  getSortedItems = sortBy => {
-    const { itemsCollection } = this.state;
-    const newItemsCollection = [...itemsCollection];
-    switch (sortBy) {
-      case "ascending price":
-        newItemsCollection.sort(ascendingPrice);
-        this.setState(prevState => ({
-          itemsCollection: newItemsCollection
-        }));
-        break;
-      case "descending price":
-        newItemsCollection.sort(descendingPrice);
-        this.setState(prevState => ({
-          itemsCollection: newItemsCollection
-        }));
-        break;
-      case "ascending date":
-        newItemsCollection.sort(ascendingDate);
-        this.setState(prevState => ({
-          itemsCollection: newItemsCollection
-        }));
-        break;
-      case "descending date":
-        newItemsCollection.sort(descendingDate);
-        this.setState(prevState => ({
-          itemsCollection: newItemsCollection
-        }));
-        break;
-      default:
+      this.setState({
+        itemsCollection: [...collectionForEdit]
+      });
     }
   };
 
-  // Удаление покупки из списка
-  deleteItem = id => {
+  deleteItem = elemKey => () => {
     const { itemsCollection } = this.state;
-
-    const newCollection = itemsCollection.filter(elem => {
-      const { id: elemId } = elem;
-      return id !== elemId;
-    });
-
+    const filteredCollection = itemsCollection.filter(
+      item => elemKey !== item.key
+    );
     this.setState({
-      itemsCollection: newCollection
+      itemsCollection: [...filteredCollection]
+    });
+  };
+
+  sortItem = (name, direction) => {
+    console.log(name, direction);
+    const { itemsCollection } = this.state;
+    let collectionForSort = [...itemsCollection];
+    collectionForSort.sort((a, b) => {
+      if (a[name] > b[name]) {
+        return direction ? 1 : -1;
+      }
+      if (a[name] < b[name]) {
+        return direction ? -1 : 1;
+      }
+      return 0;
+    });
+    this.setState({
+      itemsCollection: [...collectionForSort]
     });
   };
 
   render() {
+    const {
+      itemsCollection,
+      drawer: { open, mode, elemKey }
+    } = this.state;
     return (
-      <ItemsContext.Provider
+      <ItemsProvider
         value={{
-          state: this.state,
-          writeItemInfo: this.writeItemInfo,
-          getItemDate: this.getItemDate,
-          saveItem: this.saveItem,
+          writeItem: this.writeItem,
           deleteItem: this.deleteItem,
-          editItem: this.editItem,
-          getSortedItems: this.getSortedItems
+          toggleDrawer: this.toggleDrawer,
+          sortItem: this.sortItem,
+          itemsCollection: itemsCollection,
+          elemKey: elemKey,
+          open: open,
+          mode: mode
         }}
       >
-        <DrawerContext.Provider
-          value={{
-            state: this.state,
-            toggleAddDrawer: this.toggleAddDrawer,
-            toggleEditDrawer: this.toggleEditDrawer,
-            getElementIndex: this.getElementIndex
-          }}
-        >
-          <TopBar />
-          <Content />
-          <BottomBar />
-        </DrawerContext.Provider>
-      </ItemsContext.Provider>
+        <TopBar />
+        <Content itemsCollection={itemsCollection} />
+        <BottomBar />
+      </ItemsProvider>
     );
   }
 }

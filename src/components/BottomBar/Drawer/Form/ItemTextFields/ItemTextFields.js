@@ -3,50 +3,18 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import { itemTextFieldsStyles } from "../../../../../styles/styles";
-import { ItemsContext } from "../../../../../data/context";
 
 class ItemTextFields extends Component {
-  state = {
-    wrongName: false,
-    wrongPrice: false
-  };
-
-  showNameError = bool => {
-    this.setState({
-      ...this.state,
-      wrongName: bool
-    });
-  };
-  showPriceError = bool => {
-    this.setState({
-      ...this.state,
-      wrongPrice: bool
-    });
-  };
-
   render() {
-    let { wrongName, wrongPrice } = this.state;
-    const { classes } = this.props;
-    const context = this.context;
-    const {
-      writeItemInfo,
-      state: {
-        elementIndex: { index },
-        itemsCollection
-      }
-    } = context;
-    const item = itemsCollection[index];
-    const { name, price } = item;
-
+    const { classes, name, price, handleChange } = this.props;
+    console.log();
     return (
       <>
         <TextField
-          defaultValue={name}
-          error={wrongName}
-          onBlur={event => writeItemInfo(event, this.showNameError)}
-          onChange={event => writeItemInfo(event, this.showNameError)}
-          helperText={wrongName ? "Введите название" : ""}
           label="Название"
+          name="name"
+          value={name}
+          onChange={handleChange}
           variant="outlined"
           required
           type="text"
@@ -66,15 +34,14 @@ class ItemTextFields extends Component {
           }}
         />
         <TextField
-          defaultValue={price}
-          error={wrongPrice}
-          onChange={event => writeItemInfo(event, this.showPriceError)}
           label="Цена"
+          name="price"
+          value={price}
+          onChange={handleChange}
           variant="outlined"
           required
           type="number"
           className={classes.priceImput}
-          helperText={wrongPrice ? "Неверное значение" : ""}
           InputLabelProps={{
             classes: {
               root: classes.cssLabel,
@@ -100,8 +67,6 @@ class ItemTextFields extends Component {
     );
   }
 }
-
-ItemTextFields.contextType = ItemsContext;
 
 ItemTextFields.propTypes = {
   classes: PropTypes.object.isRequired

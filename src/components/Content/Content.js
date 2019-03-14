@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { List, Typography } from "@material-ui/core";
-import Item from "../../components/Content/Item/Item";
-import { ItemsContext } from "../../data/context";
-import uuid from "uuid/v4";
 import styled from "styled-components";
+import Item from "../../components/Content/Item/Item";
 
 const Main = styled.main`
   && {
@@ -21,39 +19,19 @@ const ListContainer = styled(List)`
 
 class Content extends Component {
   render() {
-    const context = this.context;
-
-    const {
-      state: { itemsCollection }
-    } = context;
-
-    const items = itemsCollection.map((item, index) => {
-      const key = uuid();
-      const { name, price, date } = item;
-      console.log("content:", item);
-      console.log("content:", key);
+    const { itemsCollection } = this.props;
+    const items = itemsCollection.map(item => {
+      const { name, price, date, key } = item;
       return (
-        <Item
-          name={name}
-          price={price}
-          date={date}
-          key={key}
-          id={key}
-          index={index}
-        />
+        <Item name={name} price={price} date={date} key={key} elemKey={key} />
       );
     });
-
     return (
       <Main>
-        <ListContainer>
-          {items.length === 0 ? <Typography>Пусто</Typography> : items}
-        </ListContainer>
+        <ListContainer> {items ? items : "Пусто"} </ListContainer>
       </Main>
     );
   }
 }
-
-Content.contextType = ItemsContext;
 
 export default Content;

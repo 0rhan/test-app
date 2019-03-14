@@ -1,16 +1,18 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import { AppBar, Toolbar } from "@material-ui/core";
 import Controls from "./Controls/Controls";
+import { ItemsConsumer } from "../../data/context";
 
 function TopBar(props) {
-  return(
-    <AppBar color = "primary">
+  return (
+    <AppBar color="primary">
       <Toolbar>
-        <Controls/>
+        <ItemsConsumer>
+          {({ sortItem }) => <Controls sortItem={sortItem} />}
+        </ItemsConsumer>
       </Toolbar>
     </AppBar>
-  )
+  );
 }
 
 export default TopBar;

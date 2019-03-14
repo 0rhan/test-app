@@ -15,88 +15,70 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Edit from "@material-ui/icons/Edit";
 import Cancel from "@material-ui/icons/Cancel";
 import { itemStyles } from "../../../styles/styles";
-import { ItemsContext, DrawerContext } from "../../../data/context";
+import { ItemsConsumer } from "../../../data/context";
 
 class Item extends Component {
   state = {
-    expanded: false,
     anchorEl: null
   };
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
-
-  handleMenuClick = event => {
-    this.setState({
-      anchorEl: event.currentTarget
-    });
+  openMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
   };
 
   closeMenu = () => {
-    this.setState({
-      anchorEl: null
-    });
+    this.setState({ anchorEl: null });
   };
 
   render() {
-    const { classes, name, date, price, id, index } = this.props;
+    const { classes, name, price, date, elemKey } = this.props;
     const { anchorEl } = this.state;
-    const context = this.context;
-    const { deleteItem } = context;
-
+    const formatedDate = date.format("DD.MM.YY");
     return (
       <ListItem>
-        <Card className={classes.itemCardContainer}>
-          <IconButton
-            className={classes.deleteButton}
-            onClick={() => deleteItem(id)}
-          >
-            <Cancel />
-          </IconButton>
-          <div className={classes.itemCardHeaderContainer}>
-            <Checkbox />
-            <CardHeader className={classes.cardHeader} title={name} />
-          </div>
-          <Divider />
-          <div className={classes.cardFooter}>
-            <div className={classes.itemInfoDate}>{date}</div>
-            <div>{`Стоимость: ${price}`}</div>
-            <IconButton
-              onClick={this.handleMenuClick}
-              aria-owns={anchorEl ? "item-menu" : undefined}
-              aria-haspopup="true"
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <DrawerContext.Consumer>
-              {({ toggleEditDrawer, getElementIndex }) => (
+        <ItemsConsumer>
+          {({ deleteItem, toggleDrawer }) => (
+            <Card className={classes.itemCardContainer}>
+              <IconButton
+                className={classes.deleteButton}
+                onClick={deleteItem(elemKey)}
+              >
+                <Cancel />
+              </IconButton>
+              <div className={classes.itemCardHeaderContainer}>
+                <Checkbox />
+                <CardHeader className={classes.cardHeader} title={name} />
+              </div>
+              <Divider />
+              <div className={classes.cardFooter}>
+                <div className={classes.itemInfoDate}>{formatedDate}</div>
+                <div>{`Стоимость: ${price}`}</div>
+                <IconButton
+                  onClick={this.openMenu}
+                  aria-owns={anchorEl ? "item-menu" : undefined}
+                  aria-haspopup="true"
+                >
+                  <MoreVertIcon />
+                </IconButton>
                 <Menu
                   id="item-menu"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   onClose={this.closeMenu}
                 >
-                  <MenuItem
-                    onClick={() => {
-                      toggleEditDrawer("bottom", true, index);
-                      getElementIndex(index);
-                    }}
-                  >
+                  <MenuItem onClick={toggleDrawer(true, "editing", elemKey)}>
                     <Edit fontSize="inherit" />
                     Редактировать
                   </MenuItem>
                 </Menu>
-              )}
-            </DrawerContext.Consumer>
-          </div>
-        </Card>
+              </div>
+            </Card>
+          )}
+        </ItemsConsumer>
       </ListItem>
     );
   }
 }
-
-Item.contextType = ItemsContext;
 
 Item.propTypes = {
   classes: PropTypes.object.isRequired
