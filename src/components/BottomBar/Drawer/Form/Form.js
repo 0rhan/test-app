@@ -8,15 +8,6 @@ import { FormControl, FormLabel } from "@material-ui/core";
 import moment from "moment";
 import { addingItemStyles } from "../../../../styles/styles";
 
-/*FIXME:
- * - Исправить форму
- * - - 1. Получение значений для редактирования
- * - - - 1.1 Получить индекс нужного элемента в массиве
- * - - - 1.2 Получить элемент из массива
- * - - - 1.3 Подставить значения если mode === "editing"
- * - - 2. Валидация
- */
-
 class Form extends Component {
   state = {
     name: "",

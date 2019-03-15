@@ -6,11 +6,6 @@ import { ItemsProvider } from "../data/context";
 import uuidV4 from "uuid/v4";
 import { getItemIndex } from "../utils/utils";
 
-/* TODO:
- * - 2. Сортировка
- * - 3. Валидация
- */
-
 class App extends Component {
   state = {
     itemsCollection: [],
@@ -45,14 +40,9 @@ class App extends Component {
         key: key
       };
 
-      this.setState(
-        prevState => ({
-          itemsCollection: [...prevState.itemsCollection, item]
-        }),
-        () => {
-          console.log(this.state);
-        }
-      );
+      this.setState(prevState => ({
+        itemsCollection: [...prevState.itemsCollection, item]
+      }));
     }
 
     if (mode === "editing") {
@@ -85,17 +75,10 @@ class App extends Component {
   };
 
   sortItem = (name, direction) => {
-    console.log(name, direction);
     const { itemsCollection } = this.state;
     let collectionForSort = [...itemsCollection];
     collectionForSort.sort((a, b) => {
-      if (a[name] > b[name]) {
-        return direction ? 1 : -1;
-      }
-      if (a[name] < b[name]) {
-        return direction ? -1 : 1;
-      }
-      return 0;
+      return direction ? a[name] - b[name] : b[name] - a[name];
     });
     this.setState({
       itemsCollection: [...collectionForSort]

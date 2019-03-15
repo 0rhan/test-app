@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { FormControl, Select, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
-import { ItemsConsumer } from "../../../data/context";
 
 const StyledFormControl = styled(FormControl)`
   && {
@@ -12,80 +11,39 @@ const StyledFormControl = styled(FormControl)`
 
 class Controls extends Component {
   state = {
-    select: "",
-    sort: {
-      price: "price",
-      date: "date"
-    },
-    direction: ""
+    select: ""
   };
 
-  handleClick = (direction, name) => {
-    console.log("triggurs");
+  handleClick = event => {
+    const value = event.target.value;
+    const { name, direction } = value;
     const { sortItem } = this.props;
-    console.log(sortItem);
-    this.setState(
-      {
-        direction: direction
-      },
-      () => {
-        sortItem(name, direction);
-      }
-    );
-  };
-
-  changeSelect = event => {
-    this.setState({
-      select: event.target.value
-    });
+    sortItem(name, direction);
   };
 
   render() {
-    const {
-      sort: { price, date }
-    } = this.state;
     return (
       <form>
         <StyledFormControl>
           <Select
             value={this.state.select}
-            onChange={event => this.changeSelect(event)}
+            onChange={event => this.handleClick(event)}
             name="sortitems"
             displayEmpty
           >
             <MenuItem value="" disabled>
               Сортировка
             </MenuItem>
-            <MenuItem
-              value="descending price"
-              onClick={() => {
-                this.handleClick(false, price);
-              }}
-            >
+            <MenuItem value={{ name: "price", direction: false }}>
               По убыванию цены
             </MenuItem>
-            <MenuItem
-              value="ascending price"
-              onClick={() => {
-                this.handleClick(true, price);
-              }}
-            >
+            <MenuItem value={{ name: "price", direction: true }}>
               По возрастанию цены
             </MenuItem>
-            <MenuItem
-              value="ascending date"
-              onClick={() => {
-                this.handleClick(false, date);
-              }}
-            >
+            <MenuItem value={{ name: "date", direction: false }}>
               По дате, позже
             </MenuItem>
-            <MenuItem
-              value="descending date"
-              onClick={() => {
-                this.handleClick(true, date);
-              }}
-            >
+            <MenuItem value={{ name: "date", direction: true }}>
               По дате, раньше
             </MenuItem>
           </Select>
