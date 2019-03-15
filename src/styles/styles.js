@@ -57,12 +57,18 @@ const bottomBarStyles = theme => ({
 });
 
 const addingItemStyles = theme => ({
-  Card: {
-    backgroundColor: theme.palette.primary.main
+  FormLabel: {
+    color: "black",
+    textAlign: "center",
+    padding: "10px 0px 11px 0px"
   },
-  Form: {
+  FormControl: {
     width: "95%",
     margin: "auto"
+  },
+  Form: {
+    display: "flex",
+    flexDirection: "column"
   }
 });
 
@@ -103,6 +109,12 @@ const itemTextFieldsStyles = theme => ({
   notchedOutline: {}
 });
 
+const datePickerStyles = theme => ({
+  DatePicker: {
+    margin: "10px 0px 10px 0px"
+  }
+});
+
 export {
   contentStyles,
   itemStyles,
@@ -110,5 +122,6 @@ export {
   addingItemStyles,
   itemAddImageStyles,
   itemTextFieldsStyles,
+  datePickerStyles,
   actionButtons
 };

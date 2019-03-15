@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Typography } from "@material-ui/core";
+import { List } from "@material-ui/core";
 import styled from "styled-components";
 import Item from "../../components/Content/Item/Item";
 
@@ -28,7 +28,7 @@ class Content extends Component {
     });
     return (
       <Main>
-        <ListContainer> {items ? items : "Пусто"} </ListContainer>
+        <ListContainer> {items}</ListContainer>
       </Main>
     );
   }

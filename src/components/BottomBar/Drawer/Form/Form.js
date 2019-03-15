@@ -36,8 +36,8 @@ class Form extends Component {
     const { name, price, date } = this.state;
 
     return (
-      <FormControl>
-        <FormLabel>
+      <FormControl className={classes.FormControl}>
+        <FormLabel className={classes.FormLabel}>
           {mode === "editing" ? "Редактировать покупку" : "Добавить в список"}
         </FormLabel>
         <form className={classes.Form}>

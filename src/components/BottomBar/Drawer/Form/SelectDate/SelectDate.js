@@ -9,7 +9,7 @@ import { calendarTheme } from "../../../../../styles/themes/themes";
 
 class SelectDate extends Component {
   render() {
-    const { changeDate, date, defaultDate } = this.props;
+    const { changeDate, date } = this.props;
     const locale = moment.locale("ru");
 
     return (

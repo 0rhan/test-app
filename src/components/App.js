@@ -31,6 +31,7 @@ class App extends Component {
       drawer: { mode }
     } = this.state;
 
+    //Добавить в список
     if (mode === "adding") {
       const key = uuidV4();
       const item = {
@@ -45,6 +46,7 @@ class App extends Component {
       }));
     }
 
+    //Редактировать покупку
     if (mode === "editing") {
       const { itemsCollection } = this.state;
       let collectionForEdit = [...itemsCollection];
@@ -64,6 +66,7 @@ class App extends Component {
     }
   };
 
+  //Удалить из списка
   deleteItem = elemKey => () => {
     const { itemsCollection } = this.state;
     const filteredCollection = itemsCollection.filter(
@@ -74,6 +77,7 @@ class App extends Component {
     });
   };
 
+  //Сортировка
   sortItem = (name, direction) => {
     const { itemsCollection } = this.state;
     let collectionForSort = [...itemsCollection];
