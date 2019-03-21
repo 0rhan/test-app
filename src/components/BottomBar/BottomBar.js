@@ -1,21 +1,28 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
-import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
-import RemoveShoppingCart from "@material-ui/icons/RemoveShoppingCart";
-import ShowChart from "@material-ui/icons/ShowChart";
+import { BottomNavigation, BottomNavigationAction } from "@material-ui/core/";
+import {
+  AddShoppingCart,
+  RemoveShoppingCart,
+  ShowChart
+} from "@material-ui/icons";
 import Drawer from "./Drawer/Drawer";
-import { bottomBarStyles } from "../../styles/styles";
 import { ItemsConsumer } from "../../data/context";
+import styled from "styled-components";
+
+const Navigation = styled(BottomNavigation)`
+  top: auto;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+`;
 
 class BottomBar extends Component {
   state = {
-    //номер элемента
+    // номер элемента
     value: 0
   };
 
-  //Выделение активного элемента
+  // Выделение активного элемента
   handleChange = (event, value) => {
     this.setState({
       value
@@ -23,7 +30,6 @@ class BottomBar extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     const { value } = this.state;
     return (
       <ItemsConsumer>
@@ -36,29 +42,18 @@ class BottomBar extends Component {
               mode={mode}
               elemKey={elemKey}
             />
-            <BottomNavigation
-              value={value}
-              className={classes.root}
-              onChange={this.handleChange}
-              showLabels
-            >
-              <BottomNavigationAction
-                label="Статистика"
-                icon={<ShowChart />}
-                className={classes.actionButton}
-              />
+            <Navigation value={value} onChange={this.handleChange} showLabels>
+              <BottomNavigationAction label="Статистика" icon={<ShowChart />} />
               <BottomNavigationAction
                 label="Добавить"
                 onClick={toggleDrawer(true, "adding")}
                 icon={<AddShoppingCart />}
-                className={classes.actionButton}
               />
               <BottomNavigationAction
                 label="Удалить"
                 icon={<RemoveShoppingCart />}
-                className={classes.actionButton}
               />
-            </BottomNavigation>
+            </Navigation>
           </>
         )}
       </ItemsConsumer>
@@ -66,8 +61,4 @@ class BottomBar extends Component {
   }
 }
 
-BottomBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(bottomBarStyles)(BottomBar);
+export default BottomBar;

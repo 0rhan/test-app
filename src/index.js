@@ -2,18 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "typeface-roboto";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import { mainTheme } from "./styles/themes/themes";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 function Root() {
   return (
     <>
-      <MuiThemeProvider theme={mainTheme}>
-        <CssBaseline />
-        <App />
-      </MuiThemeProvider>
+      <CssBaseline />
+      <App />
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List } from "@material-ui/core";
+import List from "@material-ui/core/List";
 import styled from "styled-components";
 import Item from "../../components/Content/Item/Item";
 
@@ -22,13 +22,14 @@ class Content extends Component {
     const { itemsCollection } = this.props;
     const items = itemsCollection.map(item => {
       const { name, price, date, key } = item;
+      console.log(key);
       return (
         <Item name={name} price={price} date={date} key={key} elemKey={key} />
       );
     });
     return (
       <Main>
-        <ListContainer> {items}</ListContainer>
+        <ListContainer>{items}</ListContainer>
       </Main>
     );
   }

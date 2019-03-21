@@ -5,68 +5,79 @@ import Content from "./Content/Content";
 import { ItemsProvider } from "../data/context";
 import uuidV4 from "uuid/v4";
 import { getItemIndex } from "../utils/utils";
+import { ThemeProvider } from "styled-components";
+import { mainTheme } from "../styles/themes/themes";
 
 class App extends Component {
   state = {
     itemsCollection: [],
     drawer: {
       open: false,
-      mode: "adding",
+      formMode: "adding",
       elemKey: ""
     }
   };
 
   toggleDrawer = (open, mode, elemKey) => () => {
+    console.log(elemKey);
     this.setState({
       drawer: {
         open: open,
-        mode: mode,
+        formMode: mode,
         elemKey: elemKey
       }
     });
   };
 
+  // Добавить в список
   writeItem = (name, price, date, elemKey) => () => {
     const {
-      drawer: { mode }
+      drawer: { formMode }
     } = this.state;
 
-    //Добавить в список
-    if (mode === "adding") {
-      const key = uuidV4();
-      const item = {
-        name: name,
-        price: price,
-        date: date,
-        key: key
-      };
+    console.log(formMode);
 
-      this.setState(prevState => ({
-        itemsCollection: [...prevState.itemsCollection, item]
-      }));
-    }
+    let item = {
+      name: name,
+      price: price,
+      date: date
+    };
 
-    //Редактировать покупку
-    if (mode === "editing") {
-      const { itemsCollection } = this.state;
-      let collectionForEdit = [...itemsCollection];
-      const newItem = {
-        name: name,
-        price: price,
-        date: date,
-        key: elemKey
-      };
+    console.log(item);
 
-      const itemIndex = getItemIndex(collectionForEdit, elemKey);
-      collectionForEdit[itemIndex] = newItem;
+    const mode = {
+      // Добавление в список
+      adding: () => {
+        const key = uuidV4();
+        item.key = key;
 
-      this.setState({
-        itemsCollection: [...collectionForEdit]
-      });
-    }
+        this.setState(prevState => ({
+          itemsCollection: [...prevState.itemsCollection, item]
+        }));
+      },
+
+      // Редактирование списка
+      editing: () => {
+        const { itemsCollection } = this.state;
+        let collectionForEdit = [...itemsCollection];
+
+        // Получение индекса нужного элемента
+        const itemIndex = getItemIndex(itemsCollection, elemKey);
+
+        // Замена на новый элемент
+        item.key = elemKey;
+        collectionForEdit[itemIndex] = item;
+
+        this.setState({
+          itemsCollection: [...collectionForEdit]
+        });
+      }
+    };
+
+    mode[formMode]();
   };
 
-  //Удалить из списка
+  // Удалить из списка
   deleteItem = elemKey => () => {
     const { itemsCollection } = this.state;
     const filteredCollection = itemsCollection.filter(
@@ -77,7 +88,7 @@ class App extends Component {
     });
   };
 
-  //Сортировка
+  // Сортировка
   sortItem = (name, direction) => {
     const { itemsCollection } = this.state;
     let collectionForSort = [...itemsCollection];
@@ -92,27 +103,32 @@ class App extends Component {
   render() {
     const {
       itemsCollection,
-      drawer: { open, mode, elemKey }
+      drawer: { open, formMode, elemKey }
     } = this.state;
     return (
-      <ItemsProvider
-        value={{
-          writeItem: this.writeItem,
-          deleteItem: this.deleteItem,
-          toggleDrawer: this.toggleDrawer,
-          sortItem: this.sortItem,
-          itemsCollection: itemsCollection,
-          elemKey: elemKey,
-          open: open,
-          mode: mode
-        }}
-      >
-        <TopBar />
-        <Content itemsCollection={itemsCollection} />
-        <BottomBar />
-      </ItemsProvider>
+      <>
+        <ItemsProvider
+          value={{
+            writeItem: this.writeItem,
+            deleteItem: this.deleteItem,
+            toggleDrawer: this.toggleDrawer,
+            sortItem: this.sortItem,
+            itemsCollection: itemsCollection,
+            elemKey: elemKey,
+            open: open,
+            formMode: formMode
+          }}
+        >
+          <ThemeProvider theme={mainTheme}>
+            <>
+              <TopBar />
+              <Content itemsCollection={itemsCollection} />
+              <BottomBar />
+            </>
+          </ThemeProvider>
+        </ItemsProvider>
+      </>
     );
   }
 }
-
 export default App;

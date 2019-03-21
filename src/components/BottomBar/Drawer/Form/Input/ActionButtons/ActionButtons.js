@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import { Button } from "@material-ui/core";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { actionButtons } from "../../../../../styles/styles";
-import { ItemsConsumer } from "./../../../../../data/context";
+import { ItemsConsumer } from "../../../../../../data/context";
+import styled from "styled-components";
+import { ToggleOnOutlined } from "@material-ui/icons";
+
+const ButtonsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 class ActionButtons extends Component {
   render() {
-    const { classes, toggleDrawer, name, price, date, elemKey } = this.props;
+    const { toggleDrawer, name, price, date, elemKey } = this.props;
     return (
-      <div className={classes.container}>
+      <ButtonsContainer>
         <Button
           color="secondary"
           variant="outlined"
@@ -28,13 +34,9 @@ class ActionButtons extends Component {
             </Button>
           )}
         </ItemsConsumer>
-      </div>
+      </ButtonsContainer>
     );
   }
 }
 
-ActionButtons.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(actionButtons)(ActionButtons);
+export default ActionButtons;

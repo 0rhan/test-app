@@ -1,12 +1,28 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import ItemTextFields from "./ItemTextFields/ItemTextFields";
-import SelectDate from "./SelectDate/SelectDate";
-import ActionButtons from "./ActionButtons/ActionButtons";
 import { FormControl, FormLabel } from "@material-ui/core";
 import moment from "moment";
-import { addingItemStyles } from "../../../../styles/styles";
+import styled from "styled-components";
+import Input from "./Input/Input";
+
+const FormContainer = styled(FormControl)`
+  && {
+    width: 95%;
+    margin: auto;
+  }
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  && {
+    color: black;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+  }
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
 
 class Form extends Component {
   state = {
@@ -32,36 +48,28 @@ class Form extends Component {
   };
 
   render() {
-    const { classes, toggleDrawer, elemKey, mode } = this.props;
+    const { mode, toggleDrawer, elemKey } = this.props;
     const { name, price, date } = this.state;
 
     return (
-      <FormControl className={classes.FormControl}>
-        <FormLabel className={classes.FormLabel}>
+      <FormContainer>
+        <StyledFormLabel>
           {mode === "editing" ? "Редактировать покупку" : "Добавить в список"}
-        </FormLabel>
-        <form className={classes.Form}>
-          <ItemTextFields
-            name={name}
-            price={price}
-            handleChange={this.handleChange}
-          />
-          <SelectDate changeDate={this.changeDate} date={date} />
-          <ActionButtons
-            toggleDrawer={toggleDrawer}
+        </StyledFormLabel>
+        <StyledForm>
+          <Input
             name={name}
             price={price}
             date={date}
             elemKey={elemKey}
+            handleChange={this.handleChange}
+            changeDate={this.changeDate}
+            toggleDrawer={toggleDrawer}
           />
-        </form>
-      </FormControl>
+        </StyledForm>
+      </FormContainer>
     );
   }
 }
 
-Form.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(addingItemStyles)(Form);
+export default Form;

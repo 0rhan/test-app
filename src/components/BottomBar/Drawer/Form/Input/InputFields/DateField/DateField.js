@@ -5,21 +5,23 @@ import MomentUtils from "@date-io/moment";
 import moment from "moment";
 import "moment/locale/ru";
 
-import { calendarTheme } from "../../../../../styles/themes/themes";
+/*import { calendarTheme } from "../../../../../../../styles/themes/themes";*/
 
-class SelectDate extends Component {
+class DateField extends Component {
   render() {
     const { changeDate, date } = this.props;
     const locale = moment.locale("ru");
 
     return (
-      <MuiThemeProvider theme={calendarTheme}>
+      /*<MuiThemeProvider theme={calendarTheme}>*/
+      <>
         <MuiPickersUtilsProvider
           utils={MomentUtils}
           locale={locale}
           moment={moment}
         >
           <DatePicker
+            name="date"
             value={date}
             onChange={changeDate}
             variant="outlined"
@@ -27,9 +29,10 @@ class SelectDate extends Component {
             disablePast
           />
         </MuiPickersUtilsProvider>
-      </MuiThemeProvider>
+      </>
+      /*</MuiThemeProvider>*/
     );
   }
 }
 
-export default SelectDate;
+export default DateField;

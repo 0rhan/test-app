@@ -1,5 +1,5 @@
 import React from "react";
-import { SwipeableDrawer } from "@material-ui/core";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Form from "./Form/Form";
 
 function Drawer(props) {
