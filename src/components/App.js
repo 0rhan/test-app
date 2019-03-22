@@ -6,7 +6,7 @@ import { ItemsProvider } from "../data/context";
 import uuidV4 from "uuid/v4";
 import { getItemIndex } from "../utils/utils";
 import { ThemeProvider } from "styled-components";
-import { mainTheme } from "../styles/themes/themes";
+import mainTheme from "../styles/themes/themes";
 
 class App extends Component {
   state = {
@@ -92,9 +92,11 @@ class App extends Component {
   sortItem = (name, direction) => {
     const { itemsCollection } = this.state;
     let collectionForSort = [...itemsCollection];
+
     collectionForSort.sort((a, b) => {
       return direction ? a[name] - b[name] : b[name] - a[name];
     });
+
     this.setState({
       itemsCollection: [...collectionForSort]
     });

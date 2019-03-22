@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 import { ItemsConsumer } from "../../../../../../data/context";
 import styled from "styled-components";
-import { ToggleOnOutlined } from "@material-ui/icons";
 
 const ButtonsContainer = styled.div`
   width: 100%;

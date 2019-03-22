@@ -6,8 +6,9 @@ import ItemHeader from "./ItemHeader/ItemHeader";
 import ItemInfo from "./ItemInfo/ItemInfo";
 
 const ItemContainer = styled(Card)`
-  width: 100%;
-  background-color: ${props => props.theme.palette.primary.main};
+  && {
+    width: 100%;
+  }
 `;
 
 function Item(props) {

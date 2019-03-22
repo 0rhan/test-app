@@ -33,13 +33,13 @@ class BottomBar extends Component {
     const { value } = this.state;
     return (
       <ItemsConsumer>
-        {({ toggleDrawer, itemsCollection, open, mode, elemKey }) => (
+        {({ toggleDrawer, itemsCollection, open, formMode, elemKey }) => (
           <>
             <Drawer
               toggleDrawer={toggleDrawer}
               itemsCollection={itemsCollection}
               open={open}
-              mode={mode}
+              formMode={formMode}
               elemKey={elemKey}
             />
             <Navigation value={value} onChange={this.handleChange} showLabels>

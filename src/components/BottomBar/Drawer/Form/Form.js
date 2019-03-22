@@ -31,7 +31,7 @@ class Form extends Component {
     date: moment()
   };
 
-  //Получение данных из формы
+  // Получение данных из формы
   handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -48,13 +48,16 @@ class Form extends Component {
   };
 
   render() {
-    const { mode, toggleDrawer, elemKey } = this.props;
+    const { formMode, toggleDrawer, elemKey } = this.props;
     const { name, price, date } = this.state;
+    console.log(formMode);
 
     return (
       <FormContainer>
         <StyledFormLabel>
-          {mode === "editing" ? "Редактировать покупку" : "Добавить в список"}
+          {formMode === "editing"
+            ? "Редактировать покупку"
+            : "Добавить в список"}
         </StyledFormLabel>
         <StyledForm>
           <Input

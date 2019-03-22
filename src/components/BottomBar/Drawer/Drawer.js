@@ -3,7 +3,7 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Form from "./Form/Form";
 
 function Drawer(props) {
-  const { toggleDrawer, open, mode, itemsCollection, elemKey } = props;
+  const { toggleDrawer, open, formMode, itemsCollection, elemKey } = props;
   return (
     <SwipeableDrawer
       anchor="bottom"
@@ -19,7 +19,7 @@ function Drawer(props) {
       <Form
         toggleDrawer={toggleDrawer}
         itemsCollection={itemsCollection}
-        mode={mode}
+        formMode={formMode}
         elemKey={elemKey}
       />
     </SwipeableDrawer>

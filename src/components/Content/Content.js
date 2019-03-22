@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import List from "@material-ui/core/List";
 import styled from "styled-components";
 import Item from "../../components/Content/Item/Item";
@@ -17,22 +17,20 @@ const ListContainer = styled(List)`
   }
 `;
 
-class Content extends Component {
-  render() {
-    const { itemsCollection } = this.props;
-    const items = itemsCollection.map(item => {
-      const { name, price, date, key } = item;
-      console.log(key);
-      return (
-        <Item name={name} price={price} date={date} key={key} elemKey={key} />
-      );
-    });
+function Content(props) {
+  const { itemsCollection } = props;
+  const items = itemsCollection.map(item => {
+    const { name, price, date, key } = item;
+    console.log(key);
     return (
-      <Main>
-        <ListContainer>{items}</ListContainer>
-      </Main>
+      <Item name={name} price={price} date={date} key={key} elemKey={key} />
     );
-  }
+  });
+  return (
+    <Main>
+      <ListContainer>{items}</ListContainer>
+    </Main>
+  );
 }
 
 export default Content;

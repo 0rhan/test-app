@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { MuiThemeProvider } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
@@ -13,7 +12,6 @@ class DateField extends Component {
     const locale = moment.locale("ru");
 
     return (
-      /*<MuiThemeProvider theme={calendarTheme}>*/
       <>
         <MuiPickersUtilsProvider
           utils={MomentUtils}
@@ -30,7 +28,6 @@ class DateField extends Component {
           />
         </MuiPickersUtilsProvider>
       </>
-      /*</MuiThemeProvider>*/
     );
   }
 }
