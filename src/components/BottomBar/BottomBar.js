@@ -9,13 +9,6 @@ import Drawer from "./Drawer/Drawer";
 import { ItemsConsumer } from "../../data/context";
 import styled from "styled-components";
 
-const Navigation = styled(BottomNavigation)`
-  top: auto;
-  bottom: 0;
-  position: fixed;
-  width: 100%;
-`;
-
 class BottomBar extends Component {
   state = {
     // номер элемента
@@ -33,10 +26,18 @@ class BottomBar extends Component {
     const { value } = this.state;
     return (
       <ItemsConsumer>
-        {({ toggleDrawer, itemsCollection, open, formMode, elemKey }) => (
+        {({
+          openDrawer,
+          closeDrawer,
+          itemsCollection,
+          open,
+          formMode,
+          elemKey
+        }) => (
           <>
             <Drawer
-              toggleDrawer={toggleDrawer}
+              openDrawer={openDrawer}
+              closeDrawer={closeDrawer}
               itemsCollection={itemsCollection}
               open={open}
               formMode={formMode}
@@ -46,7 +47,7 @@ class BottomBar extends Component {
               <BottomNavigationAction label="Статистика" icon={<ShowChart />} />
               <BottomNavigationAction
                 label="Добавить"
-                onClick={toggleDrawer(true, "adding")}
+                onClick={openDrawer(true, "adding")}
                 icon={<AddShoppingCart />}
               />
               <BottomNavigationAction
@@ -62,3 +63,10 @@ class BottomBar extends Component {
 }
 
 export default BottomBar;
+
+const Navigation = styled(BottomNavigation)`
+  top: auto;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+`;

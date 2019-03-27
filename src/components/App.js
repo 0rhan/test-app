@@ -18,8 +18,7 @@ class App extends Component {
     }
   };
 
-  toggleDrawer = (open, mode, elemKey) => () => {
-    console.log(elemKey);
+  openDrawer = (open, mode, elemKey) => () => {
     this.setState({
       drawer: {
         open: open,
@@ -29,21 +28,26 @@ class App extends Component {
     });
   };
 
+  closeDrawer = open => {
+    this.setState(prevState => ({
+      drawer: {
+        ...prevState.drawer,
+        open: open
+      }
+    }));
+  };
+
   // Добавить в список
-  writeItem = (name, price, date, elemKey) => () => {
+  writeItem = (name, price, date, elemKey) => {
     const {
       drawer: { formMode }
     } = this.state;
-
-    console.log(formMode);
 
     let item = {
       name: name,
       price: price,
       date: date
     };
-
-    console.log(item);
 
     const mode = {
       // Добавление в список
@@ -113,7 +117,8 @@ class App extends Component {
           value={{
             writeItem: this.writeItem,
             deleteItem: this.deleteItem,
-            toggleDrawer: this.toggleDrawer,
+            openDrawer: this.openDrawer,
+            closeDrawer: this.closeDrawer,
             sortItem: this.sortItem,
             itemsCollection: itemsCollection,
             elemKey: elemKey,

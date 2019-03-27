@@ -7,7 +7,7 @@ function PriceField(props) {
     <TextField
       label="Цена"
       name="price"
-      price={price}
+      value={price}
       onChange={handleChange}
       variant="outlined"
       required

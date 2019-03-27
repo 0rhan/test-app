@@ -4,18 +4,6 @@ import styled from "styled-components";
 import DeleteButton from "./DeleteButton/DeleteButton";
 import DoneButton from "./DoneButton/DoneButton";
 
-const NameContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const Name = styled(CardHeader)`
-  && {
-    flex-direction: row;
-    flex-grow: 1;
-  }
-`;
-
 function ItemHeader(props) {
   const { name, deleteItem, elemKey } = props;
   return (
@@ -30,3 +18,15 @@ function ItemHeader(props) {
 }
 
 export default ItemHeader;
+
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Name = styled(CardHeader)`
+  && {
+    flex-direction: row;
+    flex-grow: 1;
+  }
+`;

@@ -5,25 +5,19 @@ import styled from "styled-components";
 import ItemHeader from "./ItemHeader/ItemHeader";
 import ItemInfo from "./ItemInfo/ItemInfo";
 
-const ItemContainer = styled(Card)`
-  && {
-    width: 100%;
-  }
-`;
-
 function Item(props) {
   const { name, price, date, elemKey } = props;
   return (
     <ListItem>
       <ItemsConsumer>
-        {({ deleteItem, toggleDrawer }) => (
+        {({ deleteItem, openDrawer }) => (
           <ItemContainer>
             <ItemHeader name={name} deleteItem={deleteItem} elemKey={elemKey} />
             <Divider />
             <ItemInfo
               price={price}
               date={date}
-              toggleDrawer={toggleDrawer}
+              openDrawer={openDrawer}
               elemKey={elemKey}
             />
           </ItemContainer>
@@ -34,3 +28,9 @@ function Item(props) {
 }
 
 export default Item;
+
+const ItemContainer = styled(Card)`
+  && {
+    width: 100%;
+  }
+`;

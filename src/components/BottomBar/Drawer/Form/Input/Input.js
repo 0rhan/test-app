@@ -10,7 +10,8 @@ function Input(props) {
     elemKey,
     handleChange,
     changeDate,
-    toggleDrawer
+    openDrawer,
+    closeDrawer
   } = props;
   return (
     <>
@@ -22,7 +23,8 @@ function Input(props) {
         changeDate={changeDate}
       />
       <ActionButtons
-        toggleDrawer={toggleDrawer}
+        openDrawer={openDrawer}
+        closeDrawer={closeDrawer}
         name={name}
         price={price}
         date={date}

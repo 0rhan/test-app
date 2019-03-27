@@ -3,13 +3,21 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Form from "./Form/Form";
 
 function Drawer(props) {
-  const { toggleDrawer, open, formMode, itemsCollection, elemKey } = props;
+  const {
+    openDrawer,
+    closeDrawer,
+    open,
+    formMode,
+    itemsCollection,
+    elemKey
+  } = props;
+
   return (
     <SwipeableDrawer
       anchor="bottom"
       open={open}
-      onClose={toggleDrawer(false)}
-      onOpen={toggleDrawer(true)}
+      onClose={() => closeDrawer(false)}
+      onOpen={openDrawer(true)}
       disableSwipeToOpen
       disableBackdropTransition
       SlideProps={{
@@ -17,7 +25,8 @@ function Drawer(props) {
       }}
     >
       <Form
-        toggleDrawer={toggleDrawer}
+        openDrawer={openDrawer}
+        closeDrawer={closeDrawer}
         itemsCollection={itemsCollection}
         formMode={formMode}
         elemKey={elemKey}

@@ -16,7 +16,7 @@ class ItemMenu extends Component {
   };
   render() {
     const { anchorEl } = this.state;
-    const { toggleDrawer, elemKey } = this.props;
+    const { openDrawer, elemKey } = this.props;
     return (
       <>
         <IconButton
@@ -32,7 +32,7 @@ class ItemMenu extends Component {
           open={Boolean(anchorEl)}
           onClose={this.closeMenu}
         >
-          <MenuItem onClick={toggleDrawer(true, "editing", elemKey)}>
+          <MenuItem onClick={openDrawer(true, "editing", elemKey)}>
             <Edit fontSize="inherit" />
             Редактировать
           </MenuItem>

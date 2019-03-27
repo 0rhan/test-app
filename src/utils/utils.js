@@ -3,4 +3,9 @@ const getItemIndex = (itemsCollection, elemKey) => {
   return itemIndex;
 };
 
-export { getItemIndex };
+const getItem = (itemsCollection, elemKey) => {
+  const item = itemsCollection.find(item => elemKey === item.key);
+  return item;
+};
+
+export { getItemIndex, getItem };

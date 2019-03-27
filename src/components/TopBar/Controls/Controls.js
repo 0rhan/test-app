@@ -2,13 +2,6 @@ import React, { Component } from "react";
 import { FormControl, Select, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 
-const StyledFormControl = styled(FormControl)`
-  && {
-    margin: 10px;
-    min-width: 110px;
-  }
-`;
-
 class Controls extends Component {
   state = {
     select: ""
@@ -54,3 +47,10 @@ class Controls extends Component {
 }
 
 export default Controls;
+
+const StyledFormControl = styled(FormControl)`
+  && {
+    margin: 10px;
+    min-width: 110px;
+  }
+`;
