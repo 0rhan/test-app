@@ -2,10 +2,15 @@ import React from "react";
 import InputFields from "./InputFields/InputFields";
 import ActionButtons from "./ActionButtons/ActionButtons";
 
-function Input(props) {
+function InputForm(props) {
   const {
     name,
+    nameError,
+    nameValid,
     price,
+    priceError,
+    priceValid,
+    formValid,
     date,
     elemKey,
     handleChange,
@@ -17,7 +22,11 @@ function Input(props) {
     <>
       <InputFields
         name={name}
+        nameError={nameError}
+        nameValid={nameValid}
         price={price}
+        priceError={priceError}
+        priceValid={priceValid}
         date={date}
         handleChange={handleChange}
         changeDate={changeDate}
@@ -27,6 +36,7 @@ function Input(props) {
         closeDrawer={closeDrawer}
         name={name}
         price={price}
+        formValid={formValid}
         date={date}
         elemKey={elemKey}
       />
@@ -34,4 +44,4 @@ function Input(props) {
   );
 }
 
-export default Input;
+export default InputForm;

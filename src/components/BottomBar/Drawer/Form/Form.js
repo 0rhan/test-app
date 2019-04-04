@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FormControl, FormLabel } from "@material-ui/core";
 import moment from "moment";
 import styled from "styled-components";
-import Input from "./Input/Input";
+import InputForm from "./Input/InputForm";
 import { getItem } from "../../../../utils/utils";
 
 class Form extends Component {
@@ -16,9 +16,19 @@ class Form extends Component {
     const { name: initName, price: initPrice, date: initDate } = initialItem;
 
     this.state = {
-      name: initName || "",
-      price: initPrice || "",
-      date: initDate || moment()
+      // Состояние данных формы
+      formData: {
+        name: initName || "",
+        price: initPrice || "",
+        date: initDate || moment()
+      },
+
+      // Состояние валидности данных формы
+      formValidation: {
+        formErrors: { nameError: "", priceError: "" },
+        nameValid: false,
+        priceValid: false
+      }
     };
   }
 
@@ -27,20 +37,74 @@ class Form extends Component {
     const name = event.target.name;
     const value = event.target.value;
 
-    this.setState({
-      [name]: value
-    });
+    // Запись данных из формы
+    this.setState(prevState => ({
+      formData: {
+        ...prevState.formData,
+        [name]: value
+      }
+    }));
+
+    // Проверка
+    const dataValidation = {
+      // Проверка валидности названия покупки
+      name: () => {
+        const nameValid = value !== "" && value !== " ";
+
+        this.setState(prevState => ({
+          formValidation: {
+            ...prevState.formValidation,
+            nameValid: nameValid,
+            formErrors: {
+              ...prevState.formValidation.formErrors,
+              nameError: nameValid ? "" : "Название не должно быть пустым"
+            }
+          }
+        }));
+      },
+
+      // Проверка валидности цены покупки
+      price: () => {
+        // Больше 0 и только 2 символа после .
+        const reg = /(?!^[.]|0$|^[0])^-?\d*[.]?\d{0,2}$/;
+
+        const priceValid = reg.test(value) && value !== "";
+
+        this.setState(prevState => ({
+          formValidation: {
+            ...prevState.formValidation,
+            priceValid: priceValid,
+            formErrors: {
+              ...prevState.formValidation.formErrors,
+              priceError: priceValid ? "" : "Некорректный ввод. Пример: 5.30"
+            }
+          }
+        }));
+      }
+    };
+    dataValidation[name]();
   };
 
   changeDate = date => {
-    this.setState({
-      date: date
-    });
+    this.setState(prevState => ({
+      formData: {
+        ...prevState.formData,
+        date: date
+      }
+    }));
   };
 
   render() {
     const { formMode, openDrawer, closeDrawer, elemKey } = this.props;
-    const { name, price, date } = this.state;
+    const {
+      formData: { name, price, date },
+      formValidation: {
+        formErrors: { nameError, priceError },
+        nameValid,
+        priceValid
+      }
+    } = this.state;
+    const formValid = nameValid && priceValid;
 
     return (
       <FormContainer>
@@ -50,10 +114,15 @@ class Form extends Component {
             : "Добавить в список"}
         </StyledFormLabel>
         <StyledForm>
-          <Input
+          <InputForm
             name={name}
+            nameError={nameError}
+            nameValid={nameValid}
+            priceValid={priceValid}
             price={price}
+            priceError={priceError}
             date={date}
+            formValid={formValid}
             elemKey={elemKey}
             handleChange={this.handleChange}
             changeDate={this.changeDate}
@@ -79,7 +148,7 @@ const StyledFormLabel = styled(FormLabel)`
   && {
     color: black;
     text-align: center;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px 10px;
   }
 `;
 

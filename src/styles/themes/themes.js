@@ -9,9 +9,6 @@ const mainTheme = createMuiTheme({
     },
     secondary: {
       main: indigo[400]
-    },
-    error: {
-      main: "#FF0000"
     }
   }
 });

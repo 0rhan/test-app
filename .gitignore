@@ -13,6 +13,7 @@
 
 # misc
 .vscode
+.stignore
 .eslintrc.json
 thumbs.db
 .DS_Store
@@ -20,6 +21,8 @@ thumbs.db
 .env.development.local
 .env.test.local
 .env.production.local
+
+*.sync-conflict
 
 #LOGS
 *.log
