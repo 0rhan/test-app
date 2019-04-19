@@ -42,7 +42,7 @@ class Form extends Component {
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,
-        [name]: value.replace(reg, "")
+        [name]: name === "price" ? value.replace(reg, "") : value
       }
     }));
 
@@ -86,6 +86,7 @@ class Form extends Component {
     dataValidation[name]();
   };
 
+  //Запись даты
   changeDate = date => {
     this.setState(prevState => ({
       formData: {
