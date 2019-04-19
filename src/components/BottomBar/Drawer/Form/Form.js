@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FormControl, FormLabel } from "@material-ui/core";
 import moment from "moment";
 import styled from "styled-components";
-import InputForm from "./Input/InputForm";
+import InputForm from "./InputForm/InputForm";
 import { getItem } from "../../../../utils/utils";
 
 class Form extends Component {
@@ -36,12 +36,13 @@ class Form extends Component {
   handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
+    const reg = /[^0-9.]+|^[0]{2}[1-9]*$|(^\.)|(\.{2}$)|\.(\d{3}$)|(\b\.\d+\b)(\.+$)/;
 
     // Запись данных из формы
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,
-        [name]: value
+        [name]: value.replace(reg, "")
       }
     }));
 
@@ -76,7 +77,7 @@ class Form extends Component {
             priceValid: priceValid,
             formErrors: {
               ...prevState.formValidation.formErrors,
-              priceError: priceValid ? "" : "Некорректный ввод. Пример: 5.30"
+              priceError: priceValid ? "" : "Некорректный ввод. Пример: 520.30"
             }
           }
         }));
@@ -123,6 +124,7 @@ class Form extends Component {
             priceError={priceError}
             date={date}
             formValid={formValid}
+            formMode={formMode}
             elemKey={elemKey}
             handleChange={this.handleChange}
             changeDate={this.changeDate}

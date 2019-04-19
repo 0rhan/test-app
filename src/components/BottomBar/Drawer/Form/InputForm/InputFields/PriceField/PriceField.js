@@ -23,11 +23,7 @@ function PriceField(props) {
           </InputAdornment>
         ),
         inputProps: {
-          min: 1,
-          max: 9999999999,
-          step: 1,
-          type: "number",
-          inputMode: "numeric"
+          type: "text"
         }
       }}
     />

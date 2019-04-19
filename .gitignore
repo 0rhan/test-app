@@ -22,7 +22,7 @@ thumbs.db
 .env.test.local
 .env.production.local
 
-*.sync-conflict
+*.sync-conflict-*
 
 #LOGS
 *.log

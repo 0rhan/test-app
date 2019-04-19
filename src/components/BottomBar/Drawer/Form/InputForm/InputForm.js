@@ -11,6 +11,7 @@ function InputForm(props) {
     priceError,
     priceValid,
     formValid,
+    formMode,
     date,
     elemKey,
     handleChange,
@@ -37,6 +38,7 @@ function InputForm(props) {
         name={name}
         price={price}
         formValid={formValid}
+        formMode={formMode}
         date={date}
         elemKey={elemKey}
       />

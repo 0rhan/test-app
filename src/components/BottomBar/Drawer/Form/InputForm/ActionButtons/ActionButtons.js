@@ -4,7 +4,15 @@ import { ItemsConsumer } from "../../../../../../data/context";
 import styled from "styled-components";
 
 function ActionButtons(props) {
-  const { closeDrawer, name, price, date, elemKey, formValid } = props;
+  const {
+    closeDrawer,
+    name,
+    price,
+    date,
+    elemKey,
+    formMode,
+    formValid
+  } = props;
   return (
     <ButtonsContainer>
       <Button
@@ -25,7 +33,7 @@ function ActionButtons(props) {
               closeDrawer(false);
             }}
           >
-            Добавить
+            {formMode === "editing" ? "Сохранить" : "Добавить"}
           </Button>
         )}
       </ItemsConsumer>
